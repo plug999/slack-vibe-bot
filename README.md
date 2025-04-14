@@ -25,8 +25,8 @@ This is a Slack bot that listens to messages in your workspace and replies empat
 ### 1. Clone the repo:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/gpt-vibe-check.git
-cd gpt-vibe-check
+git clone https://github.com/plug999/slack-vibe-bot.git
+cd slack-vibe-bot
 
 -------------------------------------------------------------------------------
 
