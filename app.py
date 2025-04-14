@@ -104,6 +104,18 @@ def slack_events():
             )
 
     return "", 200  # Return a successful response to Slack
+# ─── handler for Slack’s URL verification ───────────────────────────────────────────────────────────────────────
+@app.route("/", methods=["POST"])
+def root_handler():
+    data = request.get_json()
+
+    # Handle Slack's URL verification challenge
+    if data and data.get("type") == "url_verification":
+        return data.get("challenge"), 200
+
+    return "OK", 200
+
+
 
 # ─── Run ───────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
