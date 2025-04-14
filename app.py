@@ -80,6 +80,30 @@ def vibecheck():
             f":dart: {vibe}"
         )
     )
+# ─── Event Subscription handler ─────────────────────────────────────────────────────
+@app.route("/slack/events", methods=["POST"])
+def slack_events():
+    # Step 1: Handle Slack's verification request (challenge)
+    if "challenge" in request.json:
+        return jsonify({"challenge": request.json["challenge"]})
+
+    # Step 2: Handle incoming events
+    event = request.json.get("event", {})
+
+    # Check for message events or other event types (depending on what you subscribed to)
+    if event.get("type") == "message" and "subtype" not in event:
+        user_id = event.get("user")
+        message = event.get("text")
+        if message:
+            username = get_username(user_id)
+            vibe = get_vibe_response(username, message)
+            # You can send the vibe check as a response to the channel (optional)
+            slack_client.chat_postMessage(
+                channel=event["channel"],
+                text=f"Vibe Check for <@{user_id}>: {vibe}"
+            )
+
+    return "", 200  # Return a successful response to Slack
 
 # ─── Run ───────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
